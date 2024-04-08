@@ -1,0 +1,135 @@
+-- Version: 3.6
+
+-- Instances:
+
+local TopBar = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local blocker = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local UIPadding = Instance.new("UIPadding")
+local Main = Instance.new("Frame")
+local UIGradient = Instance.new("UIGradient")
+local UICorner_2 = Instance.new("UICorner")
+local blocker_2 = Instance.new("Frame")
+local quit = Instance.new("ImageButton")
+
+-- Properties:
+
+TopBar.Name = "TopBar"
+TopBar.Parent = game.StarterGui.main
+TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TopBar.BorderSizePixel = 0
+TopBar.Position = UDim2.new(0.18652226, 0, 0.283442467, 0)
+TopBar.Size = UDim2.new(0, 460, 0, 35)
+
+UICorner.Parent = TopBar
+
+blocker.Name = "blocker"
+blocker.Parent = TopBar
+blocker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+blocker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+blocker.BorderSizePixel = 0
+blocker.Position = UDim2.new(0, 0, 0.800000012, 0)
+blocker.Size = UDim2.new(0, 460, 0, 14)
+
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Title.BorderSizePixel = 0
+Title.Size = UDim2.new(0, 241, 0, 35)
+Title.Font = Enum.Font.Ubuntu
+Title.Text = "Oxygen Hub"
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.TextSize = 20.000
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+UIPadding.Parent = Title
+UIPadding.PaddingLeft = UDim.new(0, 8)
+
+Main.Name = "Main"
+Main.Parent = TopBar
+Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(-0.00102897314, 0, 1, 0)
+Main.Size = UDim2.new(0, 460, 0, 259)
+
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(124, 129, 187)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(245, 255, 249))}
+UIGradient.Parent = Main
+
+UICorner_2.Parent = Main
+
+blocker_2.Name = "blocker"
+blocker_2.Parent = TopBar
+blocker_2.BackgroundColor3 = Color3.fromRGB(125, 130, 188)
+blocker_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+blocker_2.BorderSizePixel = 0
+blocker_2.Position = UDim2.new(0, 0, 1, 0)
+blocker_2.Size = UDim2.new(0, 14, 0, 7)
+
+quit.Name = "quit"
+quit.Parent = TopBar
+quit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+quit.BackgroundTransparency = 1.000
+quit.BorderColor3 = Color3.fromRGB(0, 0, 0)
+quit.BorderSizePixel = 0
+quit.Position = UDim2.new(0.921739101, 0, 0, 0)
+quit.Size = UDim2.new(0, 35, 0, 35)
+quit.Image = "rbxassetid://11419709766"
+quit.ImageColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Scripts:
+
+local function EDHFEO_fake_script() -- TopBar.LocalScript 
+	local script = Instance.new('LocalScript', TopBar)
+
+	local userInputService : UserInputService = game:GetService("UserInputService") -- UserInputService
+	local tweenService : TweenService = game:GetService("TweenService") -- Tweenservice
+	local dragToggle : boolean = nil -- Toggle?
+	local dragObject : GuiObject = script.Parent -- Object Being Dragged
+	local dragInput : InputObject = nil -- Input On The Drag Object
+	local dragStart : Vector2 = nil -- Starting Position
+	local dragInfo : TweenInfo = TweenInfo.new(0.15) -- Drag Speed
+	local dragPos : UDim2 = nil -- Drag Pos
+	
+	local updateInput = function(input) -- Updates Input
+		local delta : Vector2 = input.Position - dragStart
+		local position : UDim2 = UDim2.new(dragPos.X.Scale, dragPos.X.Offset + delta.X, dragPos.Y.Scale, dragPos.Y.Offset + delta.Y)
+		tweenService:Create(dragObject, dragInfo, {Position = position}):Play()
+	end
+	
+	local dragInputBegan = function(input: InputObject) 
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and userInputService:GetFocusedTextBox() == nil then
+			dragToggle = true
+			dragStart = input.Position
+			dragPos = dragObject.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end
+	
+	local dragInputChanged = function(input: InputObject)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end
+	
+	local userInputChanged = function(input: InputObject, gameProcessedEvent: boolean)
+		if input == dragInput and dragToggle then
+			updateInput(input) -- Calls The Update Input Function With The Provided Input Object
+		end
+	end
+	
+	dragObject.InputBegan:Connect(dragInputBegan) -- Drag Object's Input Begins and calls this function
+	dragObject.InputChanged:Connect(dragInputChanged) -- Drag Object's Input Changes and calls this function
+	userInputService.InputChanged:Connect(userInputChanged) -- Users Input Changes and calls this function
+	
+	
+end
+coroutine.wrap(EDHFEO_fake_script)()
