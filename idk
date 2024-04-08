@@ -16,7 +16,7 @@ local quit = Instance.new("ImageButton")
 -- Properties:
 
 TopBar.Name = "TopBar"
-TopBar.Parent = game.StarterGui.main
+TopBar.Parent = game.CoreGui
 TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TopBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TopBar.BorderSizePixel = 0
