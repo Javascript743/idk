@@ -128,6 +128,3 @@ quit.ImageColor3 = Color3.fromRGB(0, 0, 0)
 	dragObject.InputChanged:Connect(dragInputChanged) -- Drag Object's Input Changes and calls this function
 	userInputService.InputChanged:Connect(userInputChanged) -- Users Input Changes and calls this function
 	
-	
-end
-
